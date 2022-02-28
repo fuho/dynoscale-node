@@ -2,14 +2,14 @@
   "name": "dynoscale",
   "version": "0.0.2",
   "description": "Simple yet efficient scaling agent for Python apps on Heroku",
-  "homepage": "https://github.com/fuho/dynoscale_node#readme",
+  "homepage": "https://github.com/fuho/dynoscale-node#readme",
   "author": {
     "name": "Ondrej Dolejsi",
     "email": "ondrej.dolejsi@gmail.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fuho/dynoscale_node/issues"
+    "url": "https://github.com/fuho/dynoscale-node/issues"
   },
   "keywords": [
     "heroku",
@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fuho/dynoscale_node"
+    "url": "git+https://github.com/fuho/dynoscale-node"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
