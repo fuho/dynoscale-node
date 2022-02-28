@@ -1,0 +1,52 @@
+{
+  "name": "dynoscale",
+  "version": "0.0.1",
+  "description": "Simple yet efficient scaling agent for Python apps on Heroku",
+  "homepage": "https://github.com/fuho/dynoscale_node#readme",
+  "author": {
+    "name": "Ondrej Dolejsi",
+    "email": "ondrej.dolejsi@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fuho/dynoscale_node/issues"
+  },
+  "keywords": [
+    "heroku",
+    "scaling",
+    "dyno",
+    "scale",
+    "scaling",
+    "dynoscale",
+    "horizontal scaling"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuho/dynoscale_node"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.{ts,js}\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "pnpm test && pnpm run lint",
+    "preversion": "pnpm run lint",
+    "version": "pnpm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.3",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.5.5"
+  }
+}
