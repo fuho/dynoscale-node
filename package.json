@@ -1,6 +1,6 @@
 {
   "name": "dynoscale",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple yet efficient scaling agent for Python apps on Heroku",
   "homepage": "https://dynoscale.net",
   "author": {
