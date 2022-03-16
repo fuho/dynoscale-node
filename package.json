@@ -2,7 +2,7 @@
   "name": "dynoscale",
   "version": "0.0.3",
   "description": "Simple yet efficient scaling agent for Python apps on Heroku",
-  "homepage": "https://github.com/fuho/dynoscale-node#readme",
+  "homepage": "https://dynoscale.net",
   "author": {
     "name": "Ondrej Dolejsi",
     "email": "ondrej.dolejsi@gmail.com"
