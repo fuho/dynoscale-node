@@ -1,6 +1,6 @@
 {
   "name": "express_simple",
-  "description": "",
+  "description": "Simple Example Showcasing How To Scale Express App With Dynoscale",
   "version": "0.0.1",
   "engines": {
     "node": "18.14.2"
