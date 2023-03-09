@@ -1,0 +1,11 @@
+{
+  "name": "ds-express-simple",
+  "description": "Heroku App Showcasing Scaling Express App With Dynoscale",
+  "version": "0.0.1",
+  "engines": {
+    "node": "18.15.0"
+  },
+  "dependencies": {
+    "express_simple": "file:./examples/express_simple"
+  }
+}
