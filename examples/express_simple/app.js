@@ -1,74 +1,82 @@
-import express from 'express';
-import Dynoscale from "dynoscale";
+import express from "express";
+import Dynoscale from "@dynoscale/dynoscale";
 
 const app = express();
 app.use(Dynoscale());
 
-
 const wasteIo = async (millis) => {
-    const start = Date.now();
-    if (millis) {
-        await new Promise((r) => setTimeout(r, millis));
-    }
-    const delta = (Date.now() - start) / 1_000;
-    return delta;
+  const start = Date.now();
+  if (millis) {
+    await new Promise((r) => setTimeout(r, millis));
+  }
+  const delta = (Date.now() - start) / 1_000;
+  return delta;
 };
 const wasteCpu = () => {
-    return Array.from({length: 10_000}, (_, i) => Math.atan2(Math.sin(i), Math.cos(i + 1))).reduce((a, b) => a + b, 0);
+  return Array.from({ length: 10_000 }, (_, i) =>
+    Math.atan2(Math.sin(i), Math.cos(i + 1))
+  ).reduce((a, b) => a + b, 0);
 };
 
 const wasteRam = (megs = 16) => {
-    const arr = new Uint8Array(megs * 2 ** 20);
-    return arr.length;
+  const arr = new Uint8Array(megs * 2 ** 20);
+  return arr.length;
 };
 
 const wasteGC = (megs = 0) => {
-    const obj = {};
-    obj.arr = new Uint8Array(megs * 2 ** 20);
-    const l = obj.arr.length;
-    delete obj.arr;
-    try {
-        if (global.gc) {
-            global.gc();
-        }
-    } catch (e) {
-        console.log('`node --expose-gc index.js`');
+  const obj = {};
+  obj.arr = new Uint8Array(megs * 2 ** 20);
+  const l = obj.arr.length;
+  delete obj.arr;
+  try {
+    if (global.gc) {
+      global.gc();
     }
-    return l;
+  } catch (e) {
+    console.log("`node --expose-gc index.js`");
+  }
+  return l;
 };
 
 let wasteResources = async (io = 0, cpu = 0, ram = 0, garbage = 0) => {
-    let wastedCpu = 0.0;
-    let wastedRam = 0.0;
-    let wastedGarbage = 0.0;
+  let wastedCpu = 0.0;
+  let wastedRam = 0.0;
+  let wastedGarbage = 0.0;
 
-    let wastedIo = io ? await wasteIo(io) : 0;
+  let wastedIo = io ? await wasteIo(io) : 0;
 
-    if (cpu) {
-        wastedCpu += ((loopCount) => {
-            const start = Date.now();
-            while (loopCount-- > 0) wasteCpu();
-            return (Date.now() - start) / 1000;
-        })(cpu);
-    }
-    if (ram) {
-        wastedRam += ((fun, param) => {
-            const start = Date.now();
-            fun(param);
-            return (Date.now() - start) / 1000;
-        })(wasteRam, ram);
-    }
-    if (garbage) {
-        wastedGarbage += ((fun, param) => {
-            const start = Date.now();
-            fun(param);
-            return (Date.now() - start) / 1000;
-        })(wasteGC, garbage);
-    }
-    return (`Wasted ${wastedIo.toFixed(3)}s waiting, ${wastedCpu.toFixed(3)}s on CPU tasks, ` + `${wastedRam.toFixed(3)}s claiming RAM and ${wastedGarbage.toFixed(3)}s collecting garbage."`);
+  if (cpu) {
+    wastedCpu += ((loopCount) => {
+      const start = Date.now();
+      while (loopCount-- > 0) wasteCpu();
+      return (Date.now() - start) / 1000;
+    })(cpu);
+  }
+  if (ram) {
+    wastedRam += ((fun, param) => {
+      const start = Date.now();
+      fun(param);
+      return (Date.now() - start) / 1000;
+    })(wasteRam, ram);
+  }
+  if (garbage) {
+    wastedGarbage += ((fun, param) => {
+      const start = Date.now();
+      fun(param);
+      return (Date.now() - start) / 1000;
+    })(wasteGC, garbage);
+  }
+  return (
+    `Wasted ${wastedIo.toFixed(3)}s waiting, ${wastedCpu.toFixed(
+      3
+    )}s on CPU tasks, ` +
+    `${wastedRam.toFixed(3)}s claiming RAM and ${wastedGarbage.toFixed(
+      3
+    )}s collecting garbage."`
+  );
 };
-app.get('/', (req, res) => {
-    const payload = `<html><body>
+app.get("/", (req, res) => {
+  const payload = `<html><body>
     <h1>Hello from ☊ Node ☋ soon to be scaled by Dynoscale!</h1>
     <table>
     <tr>
@@ -134,68 +142,95 @@ app.get('/', (req, res) => {
     </table>
     <iframe name="activity" src="/date" width="100%"></iframe>
     </body></html>`;
-    res.send(payload);
+  res.send(payload);
 });
 
-app.get('/date', (req, res) => {
-    res.send(`It's ${new Date()} right now.`);
+app.get("/date", (req, res) => {
+  res.send(`It's ${new Date()} right now.`);
 });
 
-app.get('/info', (req, res) => {
-    let payload = '';
-    payload += `### ${'.httpVersion '.padEnd(76, '#')}\n`;
-    payload += `${req.httpVersion}\n\n`;
+app.get("/info", (req, res) => {
+  let payload = "";
+  payload += `### ${".httpVersion ".padEnd(76, "#")}\n`;
+  payload += `${req.httpVersion}\n\n`;
 
-    payload += `### ${'.url '.padEnd(76, '#')}\n`;
-    payload += `${req.url}\n\n`;
+  payload += `### ${".url ".padEnd(76, "#")}\n`;
+  payload += `${req.url}\n\n`;
 
-    payload += `### ${'.originalUrl '.padEnd(76, '#')}\n`;
-    payload += `${req.originalUrl}\n\n`;
+  payload += `### ${".originalUrl ".padEnd(76, "#")}\n`;
+  payload += `${req.originalUrl}\n\n`;
 
-    payload += `### ${'.method '.padEnd(76, '#')}\n`;
-    payload += `${req.method}\n\n`;
+  payload += `### ${".method ".padEnd(76, "#")}\n`;
+  payload += `${req.method}\n\n`;
 
-    payload += `### ${'.headers '.padEnd(76, '#')}\n`;
-    Object.entries(req.headers).map((v, _, __) => {
-        payload += `${v[0]}: ${v[1]}\n`;
+  payload += `### ${".headers ".padEnd(76, "#")}\n`;
+  Object.entries(req.headers).map((v, _, __) => {
+    payload += `${v[0]}: ${v[1]}\n`;
+  });
+  payload += "\n";
+
+  payload += `### ${".rawHeaders ".padEnd(76, "#")}\n`;
+  payload += `${req.rawHeaders.join("\n")}\n\n`;
+
+  let body = [];
+  req
+    .on("data", (chunk) => {
+      body.push(chunk);
+    })
+    .on("end", () => {
+      payload += `### ${"BODY ".padEnd(76, "#")}\n`;
+      payload += `${Buffer.concat(body).toString()}\n\n`;
     });
-    payload += '\n';
 
-    payload += `### ${'.rawHeaders '.padEnd(76, '#')}\n`;
-    payload += `${req.rawHeaders.join('\n')}\n\n`;
+  payload += `### ${".rawTrailers ".padEnd(76, "#")}\n`;
+  payload += `${req.rawTrailers}\n\n`;
 
-    let body = [];
-    req
-        .on('data', (chunk) => {
-            body.push(chunk);
-        })
-        .on('end', () => {
-            payload += `### ${'BODY '.padEnd(76, '#')}\n`;
-            payload += `${Buffer.concat(body).toString()}\n\n`;
-        });
-
-    payload += `### ${'.rawTrailers '.padEnd(76, '#')}\n`;
-    payload += `${req.rawTrailers}\n\n`;
-
-    res.set('Content-Type', 'text/plain');
-    res.send(payload);
+  res.set("Content-Type", "text/plain");
+  res.send(payload);
 });
 
-app.get('/io/:sleepMs', async (req, res) => {
-    res.send(await wasteResources(parseInt(req.params.sleepMs), parseInt(req.params.loopCount), parseInt(req.params.ramClaimMegs), parseInt(req.params.gcClaimMegs),),);
+app.get("/io/:sleepMs", async (req, res) => {
+  res.send(
+    await wasteResources(
+      parseInt(req.params.sleepMs),
+      parseInt(req.params.loopCount),
+      parseInt(req.params.ramClaimMegs),
+      parseInt(req.params.gcClaimMegs)
+    )
+  );
 });
 
-app.get('/cpu/:loopCount', async (req, res) => {
-    res.send(await wasteResources(parseInt(req.params.sleepMs), parseInt(req.params.loopCount), parseInt(req.params.ramClaimMegs), parseInt(req.params.gcClaimMegs),),);
+app.get("/cpu/:loopCount", async (req, res) => {
+  res.send(
+    await wasteResources(
+      parseInt(req.params.sleepMs),
+      parseInt(req.params.loopCount),
+      parseInt(req.params.ramClaimMegs),
+      parseInt(req.params.gcClaimMegs)
+    )
+  );
 });
 
-app.get('/ram/:ramClaimMegs', async (req, res) => {
-    res.send(await wasteResources(parseInt(req.params.sleepMs), parseInt(req.params.loopCount), parseInt(req.params.ramClaimMegs), parseInt(req.params.gcClaimMegs),),);
+app.get("/ram/:ramClaimMegs", async (req, res) => {
+  res.send(
+    await wasteResources(
+      parseInt(req.params.sleepMs),
+      parseInt(req.params.loopCount),
+      parseInt(req.params.ramClaimMegs),
+      parseInt(req.params.gcClaimMegs)
+    )
+  );
 });
 
-app.get('/gc/:gcClaimMegs', async (req, res) => {
-    res.send(await wasteResources(parseInt(req.params.sleepMs), parseInt(req.params.loopCount), parseInt(req.params.ramClaimMegs), parseInt(req.params.gcClaimMegs),),);
+app.get("/gc/:gcClaimMegs", async (req, res) => {
+  res.send(
+    await wasteResources(
+      parseInt(req.params.sleepMs),
+      parseInt(req.params.loopCount),
+      parseInt(req.params.ramClaimMegs),
+      parseInt(req.params.gcClaimMegs)
+    )
+  );
 });
-
 
 export default app;
