@@ -1,6 +1,6 @@
 {
   "name": "@dynoscale/dynoscale",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple yet efficient scaling agent for Python apps on Heroku",
   "homepage": "https://dynoscale.net",
   "author": {
@@ -27,6 +27,18 @@
   "type": "module",
   "main": "./lib/cjs/index.js",
   "types": "./lib/cjs/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/esm/types/index.d.ts",
+        "default": "./lib/esm/index.js"
+      },
+      "require": {
+        "types": "./lib/cjs/types/index.d.ts",
+        "default": "./lib/cjs/index.js"
+      }
+    }
+  },
   "scripts": {
     "test": "jest --no-cache",
     "clean": "rm -rf ./lib",

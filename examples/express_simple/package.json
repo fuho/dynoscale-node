@@ -20,15 +20,15 @@
   "author": "Ondrej Dolejsi",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
-    "@dynoscale/dynoscale": "^0.0.1"
+    "@dynoscale/dynoscale": "~0.0.1",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
     "relative-deps": "^1.0.7"
   },
   "relativeDependencies": {
-    "dynoscale": "../../dynoscale/"
+    "@dynoscale/dynoscale": "../../dynoscale/"
   },
   "nodemonConfig": {
     "verbose": true,

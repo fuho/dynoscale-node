@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import * as process from "process";
-import { isValidUrl } from "./utilities";
+import { isValidUrl } from "./utilities.js";
 
 export const Greeter = (name: string) => `👋 Hello, ${name}!`;
 
