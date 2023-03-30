@@ -1,8 +1,8 @@
 import express from 'express';
-import dynoscale from "dynoscale";
+import Dynoscale from "dynoscale";
 
 const app = express();
-app.use(dynoscale);
+app.use(Dynoscale());
 
 
 const wasteIo = async (millis) => {

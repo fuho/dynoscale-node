@@ -1,15 +1,15 @@
 {
-  "name": "dynoscale",
+  "name": "@dynoscale/dynoscale",
   "version": "0.0.1",
   "description": "Simple yet efficient scaling agent for Python apps on Heroku",
   "homepage": "https://dynoscale.net",
   "author": {
     "name": "Ondrej Dolejsi",
-    "email": "ondrej.dolejsi@gmail.com"
+    "email": "ondrej@dynoscale.net"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fuho/dynoscale-node/issues"
+    "url": "https://github.com/mjolnir-software/dynoscale-node/issues"
   },
   "keywords": [
     "heroku",
@@ -25,35 +25,42 @@
     "url": "git+https://github.com/fuho/dynoscale-node"
   },
   "type": "module",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./lib/cjs/index.js",
+  "types": "./lib/cjs/types/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "build": "tsc",
-    "format": "prettier --write \"src/**/*.{ts,js}\"",
-    "lint": "eslint -c .eslintrc.js",
-    "prepare": "pnpm run build",
-    "prepublishOnly": "pnpm test && pnpm run lint",
-    "preversion": "pnpm run lint",
-    "version": "pnpm run format && git add -A src",
+    "test": "jest --no-cache",
+    "clean": "rm -rf ./lib",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc -p ./configs/tsconfig.esm.json",
+    "build:cjs": "tsc -p ./configs/tsconfig.cjs.json",
+    "prepack": "npm run build",
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "lint": "eslint --config .eslintrc.cjs --ignore-path .eslintignore .",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && pnpm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },
   "files": [
     "lib/**/*"
   ],
   "devDependencies": {
-    "@types/jest": "^29.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.54.1",
-    "@typescript-eslint/parser": "^5.54.1",
-    "eslint": "^8.35.0",
-    "eslint-config-prettier": "^8.7.0",
-    "eslint-plugin-jsdoc": "^40.0.1",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jsdoc": "^40.1.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.32.2",
     "express": "^4.18.2",
     "jest": "^29.5.0",
-    "prettier": "^2.8.4",
+    "prettier": "^2.8.7",
     "ts-jest": "^29.0.5",
-    "typescript": "^4.9.5"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2"
   }
 }
