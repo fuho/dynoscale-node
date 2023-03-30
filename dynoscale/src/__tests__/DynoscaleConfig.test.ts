@@ -1,4 +1,4 @@
-import { DynoscaleConfig, RunMode } from "../index";
+import { DynoscaleConfig, RunMode } from "../index.js";
 
 describe("DynoscaleConfig", () => {
   const originalEnv = process.env;
