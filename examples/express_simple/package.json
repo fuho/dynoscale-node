@@ -10,25 +10,17 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "relative-deps",
-    "prestart": "relative-deps",
-    "prebuild": "relative-deps",
-    "pretest": "relative-deps"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Ondrej Dolejsi",
   "license": "ISC",
   "dependencies": {
-    "@dynoscale/dynoscale": "~0.0.1",
+    "@dynoscale/dynoscale": "file:../../dynoscale/",
     "express": "^4.18.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22",
-    "relative-deps": "^1.0.7"
-  },
-  "relativeDependencies": {
-    "@dynoscale/dynoscale": "../../dynoscale/"
+    "nodemon": "^2.0.22"
   },
   "nodemonConfig": {
     "verbose": true,
