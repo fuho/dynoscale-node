@@ -1,38 +1,19 @@
-import type { Config } from "jest";
+import type { JestConfigWithTsJest } from "ts-jest";
 
-export default async (): Promise<Config> => {
-  return {
-    verbose: true,
-    preset: "ts-jest",
-    testEnvironment: "node",
-    rootDir: ".",
-    clearMocks: true,
-    coverageProvider: "v8",
-    transform: {
-      "^.+\\.tsx?$": "ts-jest",
-    },
-    moduleNameMapper: {
-      "@/(.*)": "<rootDir>/src/$1",
-    },
-
-    moduleDirectories: ["node_modules", "src", "lib"],
-    moduleFileExtensions: [
-      "js",
-      "mjs",
-      "cjs",
-      "jsx",
-      "mjsx",
-      "cjsx",
-      "ts",
-      "mts",
-      "cts",
-      "tsx",
-      "mtsx",
-      "ctsx",
-      "json",
-      "node",
+const jestConfig: JestConfigWithTsJest = {
+  // [...]
+  extensionsToTreatAsEsm: [".ts"],
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+  transform: {
+    "^.+\\.m?[tj]sx?$": [
+      "ts-jest",
+      {
+        useESM: true,
+      },
     ],
-    modulePaths: ["<rootDir>", "<rootDir>/src"],
-    testPathIgnorePatterns: ["/dist/", "/node_modules/", "/lib/"],
-  };
+  },
 };
+
+export default jestConfig;
