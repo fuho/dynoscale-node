@@ -1,5 +1,5 @@
-import { DynoscaleConfig } from "./config.js";
 import { MetaData, Metric, Millis, Source } from "./types.js";
+import { randomUUID, UUID } from "crypto";
 
 export interface ILogRecord {
   readonly timestamp: Millis;
@@ -23,11 +23,9 @@ export class RequestLogRecord implements ILogRecord {
 }
 
 export class DynoscaleRepository {
-  private config: DynoscaleConfig;
   private records: RequestLogRecord[];
 
-  constructor(config?: DynoscaleConfig) {
-    this.config = config || new DynoscaleConfig();
+  constructor() {
     this.records = [];
   }
 
@@ -35,16 +33,20 @@ export class DynoscaleRepository {
     this.records.push(logRecord);
   }
 
+  /**
+   * Return all currently stored records, ordered by timestamp
+   */
   getAll(): RequestLogRecord[] {
-    return this.records;
+    return this.records.sort((a, b) => a.timestamp - b.timestamp);
   }
 
-  deleteRecordsOlderThan(time: Millis): void {
-    this.deleteRecordsBefore(new Date().getDate() - time);
+  deleteRecordsOlderThan(millis: Millis): void {
+    this.deleteRecordsBefore(new Date().getTime() - millis);
   }
 
-  deleteRecordsBefore(timestamp: Millis): void {
-    this.deleteRecords(this.records.filter((record) => record.timestamp < timestamp));
+  deleteRecordsBefore(time: Millis): void {
+    const recordsToDelete = this.records.filter((r) => time > r.timestamp);
+    this.deleteRecords(recordsToDelete);
   }
 
   deleteRecords(records: ILogRecord[]): void {
