@@ -86,4 +86,14 @@ describe("DynoscaleConfig", () => {
     expect(config.isValid).toBe(false);
     expect(config.runMode).toBe(RunMode.Production);
   });
+
+  it("toString method works", () => {
+    const DYNOSCALE_URL = "https://api.net";
+    const DYNO = "web.1";
+    process.env = { DYNOSCALE_URL, DYNO };
+    const config = new DynoscaleConfig();
+    expect(config.toString()).toEqual(
+      'DynoscaleConfig({"dynoscaleUrl":"https://api.net","dynoName":"web.1","runMode":"production"})'
+    );
+  });
 });
