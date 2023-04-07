@@ -1,6 +1,6 @@
 import { ILogRecord } from "./repository.js";
 import { ConfigResponse } from "./configResponse.js";
-import { DYNOSCALE_CLIENT_VERSION, records_to_csv } from "./utilities.js";
+import { DYNOSCALE_CLIENT_VERSION, logRecordsToCsv } from "./utilities.js";
 import got, { CancelableRequest } from "got";
 
 /**
@@ -24,7 +24,7 @@ export class DynoscaleClient {
         "User-Agent": `dynoscale-node;${this.version}`,
         HTTP_X_DYNO: this.dynoName,
       },
-      body: records_to_csv(records),
+      body: logRecordsToCsv(records),
     });
     return responsePromise.json<ConfigResponse>();
   }

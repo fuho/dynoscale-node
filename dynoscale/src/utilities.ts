@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { ILogRecord } from "./repository.js";
+import { ILogRecord, RequestLogRecord } from "./repository.js";
 import { stringify } from "csv-stringify/sync";
 import * as self from "../package.json";
 
@@ -24,11 +24,9 @@ export function requestStartFromRequest(req: Request): number {
   return Number.parseInt(<string>req.headers[REQUEST_START_KEY]);
 }
 
-export function records_to_csv(records: ILogRecord[]): string {
-  return stringify(records, {
-    header: false,
-    columns: [{ key: "timestamp" }, { key: "metric" }, { key: "source" }, { key: "metadata" }],
-  });
+export function logRecordsToCsv(records: ILogRecord[]): string {
+  const forExport = records.map((r) => [Math.floor(r.timestamp / 1_000), r.metric, r.source, r.metadata]);
+  return stringify(forExport, { header: false });
 }
 
 export const DYNOSCALE_CLIENT_VERSION = self.version;
