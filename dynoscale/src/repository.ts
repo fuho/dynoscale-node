@@ -1,5 +1,4 @@
 import { MetaData, Metric, Millis, Source } from "./types.js";
-import { randomUUID, UUID } from "crypto";
 
 export interface ILogRecord {
   readonly timestamp: Millis;

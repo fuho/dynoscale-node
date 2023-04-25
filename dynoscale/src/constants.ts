@@ -1,0 +1,1 @@
+export const DYNOSCALE_CLIENT_VERSION = "0.0.4";

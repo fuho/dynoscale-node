@@ -2,7 +2,6 @@ import { DynoscaleConfig } from "./config.js";
 import { DynoscaleRepository, ILogRecord } from "./repository.js";
 import { DynoscaleClient } from "./client.js";
 import { Millis } from "./types.js";
-import { CancelableRequest } from "got";
 import { ConfigResponse } from "./configResponse.js";
 
 const MAX_RECORD_AGE_MS: Millis = 300_000; // Records older than this will be discarded before each upload
@@ -21,7 +20,7 @@ export class DynoscaleAgent {
 
   constructor(config?: DynoscaleConfig) {
     this.config = config || new DynoscaleConfig();
-    this.repository = new DynoscaleRepository(config);
+    this.repository = new DynoscaleRepository();
     this.client = new DynoscaleClient(this.config.dynoscaleUrl, this.config.dynoName);
     this._publishFrequency = DEFAULT_PUBLISH_FREQUENCY;
     this.lastPublishAttempt = null;
@@ -66,7 +65,7 @@ export class DynoscaleAgent {
         console.log(reason);
       })
       .then(
-        (value: void | CancelableRequest<ConfigResponse>) => {
+        (value: ConfigResponse | void) => {
           console.log("then.onFulfilled");
           console.log(value);
           // in this case it records were successfully published so update lastPublishSuccess
